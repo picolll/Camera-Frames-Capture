@@ -6,6 +6,7 @@ function App() {
   const [frames, setFrames] = useState<EncodedVideoChunk[]>([]);
   const [pattern, setPattern] = useState("00110011001100110011");
   const [framesCount, setFramesCount] = useState(20);
+  const [codec, setCodec] = useState("vp8");
 
   const mySelectRef = useRef<HTMLSelectElement | null>(null);
   const carouselIntervalRef = useRef<number | null>(null);
@@ -58,11 +59,11 @@ function App() {
       error: (e: Error) => console.error(e)
     });
     encoder.configure({
-      codec: "vp8",
+      codec: codec,
       width: width as number,
       height: height as number
-    });
-    if (decoder.current.state !== "configured") decoder.current.configure({ codec: "vp8", codedWidth: width, codedHeight: height });
+    }); console.log('Using %c codec: ' + codec, 'color: green');
+    decoder.current.configure({ codec: codec, codedWidth: width, codedHeight: height });
     const halfSecondInMicroseconds: number = 500000;
     for (let i = 0; i < framesCount; i++) {
       const color = pattern[i] === "0" ? "black" : "white";
@@ -88,8 +89,8 @@ function App() {
   async function start() {
     setHideCamera(false);
     const canvas = document.getElementById("canvasElementForDisplay") as HTMLCanvasElement;
-    if(canvas.width > 0) canvas.width = 0;
-    if(canvas.height > 0) canvas.height = 0;
+    if (canvas.width > 0) canvas.width = 0;
+    if (canvas.height > 0) canvas.height = 0;
     const stream = await getBestFrontCameraStream();
     const video = document.getElementById("videoElement") as HTMLVideoElement;
     if (!video) throw new Error("No video element found");
@@ -163,8 +164,13 @@ function App() {
         <input id="pattern" ref={patternRef} type='text' pattern={`[0-1]{${framesCount}}`} value={pattern} title='Only 0 or 1 allowed up to frames count' onChange={(e) => setPattern(e.target.value)} />
         <label htmlFor="framesCount">Frames Count:</label>
         <input id="framesCount" type='number' value={framesCount} onChange={(e) => setFramesCount(parseInt(e.target.value))} />
+        <label htmlFor="codec">Codec:</label>
+        <select id="codec" value={codec} onChange={(e) => setCodec(e.target.value)}>
+          <option value="vp8">VP8</option>
+          <option value="vp09.00.10.08">VP9 09.00.10.08</option>
+        </select>
         <button onClick={() => window.location.reload()}>Reset</button>
-        {(frames.length === 0) && <button onClick={() => setHideCamera(prev => !prev)}>{hideCamera ? "Show" : "Hide"} Camera</button>}
+        <button onClick={() => setHideCamera(prev => !prev)}>{hideCamera ? "Show" : "Hide"} Camera</button>
         <button onClick={() => setScreenColor(isBackgroundBlack() ? "white" : "black")}>Toggle Background Color</button>
         {!carouselActive && (frames.length !== 0) && <button onClick={startAnimate} >Start Animate</button>}
         {carouselActive && <button onClick={stopAnimate} >Stop Animate</button>}
