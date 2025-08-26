@@ -62,7 +62,7 @@ function App() {
       codec: codec,
       width: width as number,
       height: height as number
-    }); console.log('Using %c codec: ' + codec, 'color: green');
+    });
     decoder.current.configure({ codec: codec, codedWidth: width, codedHeight: height });
     const halfSecondInMicroseconds: number = 500000;
     for (let i = 0; i < framesCount; i++) {
