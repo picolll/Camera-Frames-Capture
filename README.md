@@ -31,6 +31,6 @@ This project is a simple React application that captures a sequence of frames fr
     * You can Reset the pattern and frames count to default values by clicking the **"Reset"** button and start capturing from the scrach.
     * You can use **'Hide/Show Camera'** button to hide/show the camera feed, when recording or let the application do it for you. By default the application will show the Camera while recording and then hide it to show the results.
     * You can use **'Toggle Background Color'** button to toggle the background color between black and white.(convinience feature)
-    * You can view captured Frames by selecting them from the dropdown. Viewing them int the order of capturing has the desired effect as they are stored as deltas from the previous frame. Viewing them in random order will generate noisy results.
+    * You can view captured Frames by selecting them from the dropdown. Viewing them in the order of capturing has the desired effect as they are stored as deltas from the previous frame. Viewing them in random order will generate noisy results.
     * You can use **'Start Animate'** button to start the animation of the frames in loop. You can use **'Stop Animate'** button to stop the animation.
     * Frames are displayed in their captured resolution and not scaled down, so depending on your camera resolution, you can zoom out to view them.
